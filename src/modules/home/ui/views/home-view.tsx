@@ -1,18 +1,36 @@
-"use client"
+"use client";
 
-import React from 'react'
-import { authClient } from '@/lib/auth-client'
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import React from "react";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import { useTRPC } from "@/trpc/client";
+import Popular from "./popular";
+import SearchItem from "./search-item";
+import Categoric from "./categoric";
 
 export default function HomeView() {
   const router = useRouter();
-  const {data, isPending} = authClient.useSession();
-
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const { data: menu } = useSuspenseQuery(trpc.menu.getMany.queryOptions());
+  let categoricalMenu: { [key: string]: typeof menu } = {};
+  menu.forEach((item) => {
+    if (!(item.category in categoricalMenu)) {
+      categoricalMenu[item.category] = [];
+    }
+    categoricalMenu[item.category].push(item);
+  });
   return (
-    <div>
-      <p>{data?.user.name}</p>
-      <Button onClick={()=>{authClient.signOut({fetchOptions: {onSuccess:()=> router.push('/auth/sign-in')}})}}>Logout</Button>
-    </div>
-  )
+    <>
+      <SearchItem />
+      <Popular data={menu} />
+      <Categoric categoric_data={categoricalMenu} />
+    </>
+  );
 }
