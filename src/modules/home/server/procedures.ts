@@ -7,8 +7,12 @@ import { eq } from "drizzle-orm";
 
 export const menuRouter = createTRPCRouter({
   getMany: baseProcedure.query(async () => {
-    const items = await db.select().from(menu);
-    return items;
+    const menuData = await db.select().from(menu);
+    const numericMenu = menuData.map((item) => ({
+      ...item,
+      price: Number(item.price), // convert string to number
+    }));
+    return numericMenu;
   }),
 
   getOne: baseProcedure

@@ -9,22 +9,22 @@ export default function Popular({ data }: Props) {
   // Sort data by ordercount descending
   const sorted = [...data].sort((a, b) => b.ordercount - a.ordercount);
   // State for each item's count
-  const [counts, setCounts] = useState<{ [sno: string]: number }>({});
+  const [counts, setCounts] = useState<{ [id: string]: number }>({});
   const handleAdd = (item: Datas[number]) => {
     setCounts((prev) => {
-      const newCount = (prev[item.sno] || 0) + 1;
+      const newCount = (prev[item.id] || 0) + 1;
       console.log("item added successfully");
       // if (onAdd) onAdd(item, newCount);
-      return { ...prev, [item.sno]: newCount };
+      return { ...prev, [item.id]: newCount };
     });
   };
 
   const handleSub = (item: Datas[number]) => {
     setCounts((prev) => {
-      const newCount = Math.max((prev[item.sno] || 0) - 1, 0);
+      const newCount = Math.max((prev[item.id] || 0) - 1, 0);
       console.log("item added successfully");
       // if (onSub) onSub(item, newCount);
-      return { ...prev, [item.sno]: newCount };
+      return { ...prev, [item.id]: newCount };
     });
   };
 
@@ -36,7 +36,7 @@ export default function Popular({ data }: Props) {
       <div className="flex flex-col gap-4 m-2">
         {sorted.map((item) => (
           <div
-            key={item.sno}
+            key={item.id}
             className="flex items-center justify-between border rounded-lg p-4 shadow-sm bg-white"
           >
             <span className="font-medium text-gray-800">{item.name}</span>
@@ -47,7 +47,7 @@ export default function Popular({ data }: Props) {
               >
                 -
               </button>
-              <span className="w-6 text-center">{counts[item.sno] || 0}</span>
+              <span className="w-6 text-center">{counts[item.id] || 0}</span>
               <button
                 className="px-2 py-1 bg-gray-200 rounded text-lg"
                 onClick={() => handleAdd(item)}
