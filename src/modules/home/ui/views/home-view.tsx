@@ -1,26 +1,25 @@
 "use client";
 
 import React from "react";
-// import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { useTRPC } from "@/trpc/client";
-import Popular from "./popular";
 import SearchItem from "./search-item";
+import Popular from "./popular";
 import Categoric from "./categoric";
+import { Datas } from "./types";
 
-export default function HomeView() {
-  const router = useRouter();
-  const trpc = useTRPC();
-  const queryClient = useQueryClient();
-  const { data: menu } = useSuspenseQuery(trpc.menu.getMany.queryOptions());
-  const categoricalMenu: { [key: string]: typeof menu } = {};
+interface Props {
+  menu: Datas;
+}
+
+export default function HomeView({ menu }: Props) {
+  // Organize menu by category
+  const categoricalMenu: { [key: string]: Datas } = {};
   menu.forEach((item) => {
     if (!(item.category in categoricalMenu)) {
       categoricalMenu[item.category] = [];
     }
     categoricalMenu[item.category].push(item);
   });
+
   return (
     <>
       <SearchItem />
