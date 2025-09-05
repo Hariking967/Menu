@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import useMenuFilters from "../../hooks/use-menu-filters";
 import { Input } from "@/components/ui/input";

@@ -1,7 +1,5 @@
 import HomeView from "@/modules/home/ui/views/home-view";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 export default async function Home() {
   // const session = await auth.api.getSession({
@@ -13,5 +11,11 @@ export default async function Home() {
   // if (session.user.email == "harigallery9@gmail.com") {
   //   return <AdminView />;
   // }
-  return <HomeView></HomeView>;
+  return (
+    <>
+      <Suspense fallback={<div>Loading bookings...</div>}>
+        <HomeView />
+      </Suspense>
+    </>
+  );
 }
