@@ -14,7 +14,7 @@ export default function HomeView({ menu }: Props) {
   // Organize menu by category
   const categoricalMenu: { [key: string]: Datas } = {};
   menu.forEach((item) => {
-    if (!(item.category in categoricalMenu)) {
+    if (!categoricalMenu[item.category]) {
       categoricalMenu[item.category] = [];
     }
     categoricalMenu[item.category].push(item);
