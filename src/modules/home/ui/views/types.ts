@@ -1,8 +1,8 @@
 export type Datas = {
-  sno: string;
+  id: string;
   category: string;
   name: string;
-  price: string;
+  price: number;
   ordercount: number;
   createdat: string;
   updatedat: string;

@@ -1,14 +1,10 @@
 "use client";
 
 import React from "react";
-import { authClient } from "@/lib/auth-client";
+// import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import Popular from "./popular";
 import SearchItem from "./search-item";
@@ -19,7 +15,7 @@ export default function HomeView() {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const { data: menu } = useSuspenseQuery(trpc.menu.getMany.queryOptions());
-  let categoricalMenu: { [key: string]: typeof menu } = {};
+  const categoricalMenu: { [key: string]: typeof menu } = {};
   menu.forEach((item) => {
     if (!(item.category in categoricalMenu)) {
       categoricalMenu[item.category] = [];

@@ -69,7 +69,9 @@ export const verification = pgTable("verification", {
 });
 
 export const menu = pgTable("menu", {
-  sno: numeric("sno").primaryKey(),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
   category: text("category").notNull(),
   name: text("name").notNull(),
   price: numeric("price").notNull(),
