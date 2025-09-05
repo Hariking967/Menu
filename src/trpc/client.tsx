@@ -22,11 +22,14 @@ function getQueryClient() {
   return browserQueryClient;
 }
 function getUrl() {
-  const base = (() => {
-    if (typeof window !== "undefined") return "";
-    return process.env.NEXT_PUBLIC_APP_URL;
-  })();
-  return `${base}/api/trpc`;
+  if (typeof window !== "undefined") {
+    // Client-side: use relative path
+    return "/api/trpc";
+  }
+  // Server-side: use env variable or fallback
+  return `${
+    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+  }/api/trpc`;
 }
 export function TRPCReactProvider(
   props: Readonly<{
