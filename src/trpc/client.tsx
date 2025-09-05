@@ -21,16 +21,17 @@ function getQueryClient() {
   if (!browserQueryClient) browserQueryClient = makeQueryClient();
   return browserQueryClient;
 }
-function getUrl() {
-  if (typeof window !== "undefined") {
-    // Client-side: use relative path
-    return "/api/trpc";
-  }
-  // Server-side: use env variable or fallback
-  return `${
-    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
-  }/api/trpc`;
+function getBaseUrl() {
+  if (typeof window !== "undefined") return ""; // browser uses relative URL
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  if (process.env.NEXT_PUBLIC_APP_URL) return process.env.NEXT_PUBLIC_APP_URL;
+  return "http://localhost:3000"; // local dev fallback
 }
+
+function getUrl() {
+  return `${getBaseUrl()}/api/trpc`;
+}
+
 export function TRPCReactProvider(
   props: Readonly<{
     children: React.ReactNode;
